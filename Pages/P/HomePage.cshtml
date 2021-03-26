@@ -1,0 +1,250 @@
+﻿@page
+@model Howl.Pages.HomePageModel
+@{
+}
+<div class="row">
+    <div class="col-6 d-inline">
+            <button class="btn btn-secondary btn-sm float-right" onclick="$('#fl').toggle()">See Followers</button>
+            <h3>Follower Review</h3>
+
+        <div id="fl" style="display:none;">
+            <ul>
+                @if (Model.Followers.Count != 0)
+                {
+                    @foreach (var f in Model.Followers)
+                    {
+                        <li>@f.Username</li>
+                    }
+                }
+            </ul>
+        </div>
+        @if (Model.Reviews.Count != 0)
+        {
+            @foreach (var rv in Model.FollowerReview)
+            {
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title d-inline">@rv.Album.AlbumTitle</h5>
+                        <div>
+                            @for (int i = 0; i < rv.StarRating; i++)
+                            {
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                            }
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <img class="float-right" height="150" width="150" src="@rv.Album.CoverUrl" />
+                        <p><strong>@rv.ReviewTitle</strong></p>
+                        <p class="card-text text-light">@rv.ReviewText</p>
+                    </div>
+                    <div>
+                        <form class="d-inline" method="post" asp-page-handler="Like">
+                            <input type="hidden" asp-for="@Model.likedislike.ReviewID" value="@rv.ReviewID" />
+                            <button class="btn btn-success col-2 d-inline"><i class="fa fa-thumbs-o-up"></i></button>
+                        </form>
+                        @*<p class="text-success d-inline">@rv.Like</p>*@
+                        <form class="d-inline" method="post" asp-page-handler="Dislike">
+                            <input type="hidden" asp-for="@Model.likedislike.ReviewID" value="@rv.ReviewID" />
+                            <button class="btn btn-danger col-2 d-inline"><i class="fa fa-thumbs-o-down"></i></button>
+                        </form>
+                        @*<p class="text-danger d-inline">@rv.Dislike</p>*@
+                        <div class="d-inline">
+                            <p class="card-text d-inline col"><em>@rv.User.Username</em></p>
+                            <p class=" card-text d-inline float-right mr-1">@rv.PublishDateTime.ToString("dd/MM/yyyy")</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <p class="text-light">Review rating:</p>
+                @if (rv.Like == 0 && rv.Dislike == 0)
+                {
+                        <p class="text-light" style="margin-left: 1em">Undecided</p>
+                }
+                else if (rv.Like != 0 || rv.Dislike != 0)
+                {
+                    if (rv.Like > rv.Dislike)
+                    {
+                        if (rv.Like > rv.Dislike + 10)
+                        {
+                                    <div class="d-flex">
+                                        <p class="text-success" style="margin-left: 1em">Overwhelmingly positive</p>
+                                        <p class="text-light" style="margin-left: 1em"> (@(rv.Like += rv.Dislike))</p>
+                                    </div>
+                        }
+                        else if (rv.Like > rv.Dislike + 5)
+                        {
+                                    <div class="d-flex">
+                                        <p class="text-success" style="margin-left: 1em">Very positive</p>
+                                        <p class="text-light" style="margin-left: 1em"> (@(rv.Like += rv.Dislike))</p>
+                                    </div>
+                        }
+                        else
+                        {
+                                    <div class="d-flex">
+                                        <p class="text-success" style="margin-left: 1em">Mostly positive</p>
+                                        <p class="text-light" style="margin-left: 1em"> (@(rv.Like += rv.Dislike))</p>
+                                    </div>
+                        }
+                    }
+                    else if (rv.Like == rv.Dislike)
+                    {
+                                <div class="d-flex">
+                                     <p class="text-warning" style="margin-left: 1em">Mixed</p>
+                                     <p class="text-light" style="margin-left: 1em"> (@(rv.Like += rv.Dislike))</p>
+                                </div>
+                    }
+                    else
+                    {
+                        if (rv.Like < rv.Dislike - 5)
+                        {
+                                    <div class="d-flex">
+                                        <p class="text-danger" style="margin-left: 1em">Very negative</p>
+                                        <p class="text-light" style="margin-left: 1em"> (@(rv.Like += rv.Dislike))</p>
+                                    </div>
+                        }
+                        else
+                        {
+                                    <div class="d-flex">
+                                        <p class="text-danger" style="margin-left: 1em">Mostly negative</p>
+                                        <p class="text-light" style="margin-left: 1em"> (@(rv.Like += rv.Dislike))</p>
+                                    </div>
+                            }
+                        }
+                    }
+                    
+        </div>
+            }
+        }
+    </div>
+    <div class="col-6 d-inline">
+        <h3>Newest reviews</h3>
+        @if (Model.Reviews.Count != 0)
+        {
+            @foreach (var rv in Model.Reviews)
+            {
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title d-inline">@rv.Album.AlbumTitle</h5>
+                        <div>
+                            @for (int i = 0; i < rv.StarRating; i++)
+                            {
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                            }
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <img class="float-right" height="150" width="150" src="@rv.Album.CoverUrl" />
+                        <p><strong>@rv.ReviewTitle</strong></p>
+                        <p class="card-text text-light">@rv.ReviewText</p>
+                    </div>
+                    <div>
+                        <form class="d-inline" method="post" asp-page-handler="Like">
+                            <input type="hidden" asp-for="@Model.likedislike.ReviewID" value="@rv.ReviewID" />
+                            <button class="btn btn-success col-2 d-inline"><i class="fa fa-thumbs-o-up"></i></button>
+                        </form>
+                        @*<p class="text-success d-inline">@rv.Like</p>*@
+                        <form class="d-inline" method="post" asp-page-handler="Dislike">
+                            <input type="hidden" asp-for="@Model.likedislike.ReviewID" value="@rv.ReviewID" />
+                            <button class="btn btn-danger col-2 d-inline"><i class="fa fa-thumbs-o-down"></i></button>
+                        </form>
+                        @*<p class="text-danger d-inline">@rv.Dislike</p>*@
+                        <div class="d-inline">
+                            
+                            @if (!Model.Followers.Contains(Model.Followers.Find(u => u.Username == rv.User.Username)))
+                            {
+                                <form class="d-inline" method="post" asp-page-handler="follow">
+                                    <input type="hidden" asp-for="@Model.User1.Username" value="@Model.User1.Username" />
+                                    <input type="hidden" asp-for="@Model.fu.Username" value="@rv.User.Username" />
+
+                                    <input type="submit" class="btn btn-primary btn-sm" value="Follow" />
+                                </form>
+                            }
+                            else
+                            {
+                        <form class="d-inline" method="post" asp-page-handler="unfollow">
+                            <input type="hidden" asp-for="@Model.User1.Username" value="@Model.User1.Username" />
+                            <input type="hidden" asp-for="@Model.fu.Username" value="@rv.User.Username" />
+                            <input type="submit" class="btn btn-outline-primary btn-sm" value="Unfollow" />
+                        </form>
+                            }
+                            <p class="card-text d-inline col mr-1"><em>@rv.User.Username</em></p>
+                            <p class=" card-text d-inline float-right mr-2">@rv.PublishDateTime.ToString("dd/MM/yyyy")</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <p class="text-muted">Review rating:</p>
+                    @if (rv.Like == 0 && rv.Dislike == 0)
+                    {
+                        <p class="text-muted" style="margin-left: 1em">Undecided</p>
+                        }
+                        else if (rv.Like != 0 || rv.Dislike != 0)
+                        {
+                            if (rv.Like > rv.Dislike)
+                            {
+                                if (rv.Like > rv.Dislike + 10)
+                                {
+                                    <div class="d-flex">
+                                        <p class="text-success" style="margin-left: 1em">Overwhelmingly positive</p>
+                                        <p class="text-muted" style="margin-left: 1em"> (@(rv.Like += rv.Dislike))</p>
+                                    </div>
+                                }
+                                else if (rv.Like > rv.Dislike + 5)
+                                {
+                                    <div class="d-flex">
+                                        <p class="text-success" style="margin-left: 1em">Very positive</p>
+                                        <p class="text-muted" style="margin-left: 1em"> (@(rv.Like += rv.Dislike))</p>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="d-flex">
+
+                                        <p class="text-success" style="margin-left: 1em"> Mostly positive </p>
+
+                                        <p class="text-muted" style="margin-left: 1em"> (@(rv.Like += rv.Dislike))</p>
+
+                                    </div>
+                                }
+                            }
+                            else if (rv.Like == rv.Dislike)
+                            {
+                                <div class="d-flex">
+
+                                    <p class="text-warning" style="margin-left: 1em"> Mixed </p>
+
+                                    <p class="text-muted" style="margin-left: 1em"> (@(rv.Like += rv.Dislike))</p>
+
+                                </div>
+                            }
+                            else
+                            {
+                                if (rv.Like < rv.Dislike - 5)
+                                {
+                                    <div class="d-flex">
+
+                                        <p class="text-danger" style="margin-left: 1em"> Very negative </p>
+
+                                        <p class="text-muted" style="margin-left: 1em"> (@(rv.Like += rv.Dislike))</p>
+
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="d-flex">
+
+                                        <p class="text-danger" style="margin-left: 1em"> Mostly negative </p>
+
+                                        <p class="text-muted" style="margin-left: 1em"> (@(rv.Like += rv.Dislike))</p>
+
+                                    </div>
+                                }
+                            }
+                        }
+                        
+
+                    </div>
+            }
+        }
+    </div>
+</div>

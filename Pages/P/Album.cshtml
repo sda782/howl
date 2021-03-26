@@ -1,0 +1,65 @@
+﻿@page
+@model Howl.Pages.P.AlbumModel
+@{
+}
+<div class="bg-dark float-left">
+    <img height="300" width="300" src="@Model.Album.CoverUrl" />
+    <div class="card">
+        <div class="card-body">
+            <p class="card-text float-left text-light d-inline">Rating:</p>
+            <p class="card-text float-right text-info d-inline">@Model.Rating</p>
+        </div>
+        <div class="card-body">
+            <p class="card-text float-left text-light d-inline">Title:</p>
+            <p class="card-text float-right text-info d-inline">@Model.Album.AlbumTitle</p>
+        </div>
+        <div class="card-body">
+            <p class="card-text float-left text-light d-inline">Artist:</p>
+            <p class="card-text float-right text-info d-inline">@Model.Album.Artist</p>
+        </div>
+        <div class="card-body">
+            <p class="card-text float-left text-light d-inline">Released:</p>
+            <p class="card-text float-right text-info d-inline">@Model.Album.Year.ToString("dd/MM/yyyy")</p>
+        </div>
+        <div class="card-body">
+            <p class="card-text float-left text-light d-inline">Genre:</p>
+            <p class="card-text float-right text-info d-inline">@Model.Album.MusicGenre</p>
+        </div>
+    </div>
+</div>
+<div class="float-right w-50">
+    <h3 class="text-light">Reviews</h3>
+    @if (HttpContext.Request.Cookies.ContainsKey("UserName"))
+    {
+        <a asp-page="WriteReview" asp-route-id="@Model.Album.AlbumID" class="btn btn-primary">Write review</a>
+        <br />
+    }
+    <br />
+    @if (Model.Reviews.Count() != 0)
+    {
+        @foreach (var rv in Model.Reviews)
+        {
+            <div class="bg-dark w-100 card mb-5">
+                <div class="card-header">
+                    @*<h5 class="card-title d-inline">@rv.Album.AlbumTitle</h5>*@
+                    <p class="card-text d-inline"><strong>@rv.ReviewTitle</strong></p>
+                    <div class="d-inline">
+                        @for (int i = 0; i < rv.StarRating; i++)
+                        {
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                        }
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p class="card-text text-light">@rv.ReviewText</p>
+                </div>
+                <div>
+                    <div class="d-inline">
+                        <p class="card-text text-white d-inline col mr-1"><em>@rv.User.Username</em></p>
+                        <p class=" card-text text-info d-inline float-right mr-2">@rv.PublishDateTime.ToString("dd/MM/yyyy")</p>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>

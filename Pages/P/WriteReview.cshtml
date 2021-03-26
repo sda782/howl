@@ -1,0 +1,105 @@
+﻿@page
+@model Howl.Pages.WriteReviewModel
+@{
+}
+@*<input type="radio" name="rate" id="rate-5">
+    <label for="rate-5" class="fas fa-star"></label>
+    <input type="radio" name="rate" id="rate-4">
+    <label for="rate-4" class="fas fa-star"></label>
+    <input type="radio" name="rate" id="rate-3">
+    <label for="rate-3" class="fas fa-star"></label>
+    <input type="radio" name="rate" id="rate-2">
+    <label for="rate-2" class="fas fa-star"></label>
+    <input type="radio" name="rate" id="rate-1">
+    <label for="rate-1" class="fas fa-star"></label>*@
+
+<h3>Currently reviewing @Model.Review.Album.AlbumTitle</h3>
+<form method="post">
+
+    <div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="stars">
+                    <input asp-for="@Model.StarRating" value="5" class="star star-5" id="star-5" type="radio" />
+                    <label class="star star-5" for="star-5"></label>
+                    <input asp-for="@Model.StarRating" value="4" class="star star-4" id="star-4" type="radio" />
+                    <label class="star star-4" for="star-4"></label>
+                    <input asp-for="@Model.StarRating" value="3" class="star star-3" id="star-3" type="radio" checked="checked"/>
+                    <label class="star star-3" for="star-3"></label>
+                    <input asp-for="@Model.StarRating" value="2" class="star star-2" id="star-2" type="radio" />
+                    <label class="star star-2" for="star-2"></label>
+                    <input asp-for="@Model.StarRating" value="1" class="star star-1" id="star-1" type="radio" />
+                    <label class="star star-1" for="star-1"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*<div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="stars">
+                    <input asp-for="@Model.StarRating" value="5" class="star star-5" id="star-5" type="radio" checked="checked" name="star" />
+                    <label class="star star-5" for="star-5"></label>
+                    <input asp-for="@Model.StarRating" value="4" class="star star-4" id="star-4" type="radio" name="star" />
+                    <label class="star star-4" for="star-4"></label>
+                    <input asp-for="@Model.StarRating" value="3" class="star star-3" id="star-3" type="radio" name="star" />
+                    <label class="star star-3" for="star-3"></label>
+                    <input asp-for="@Model.StarRating" value="2" class="star star-2" id="star-2" type="radio" name="star" />
+                    <label class="star star-2" for="star-2"></label>
+                    <input asp-for="@Model.StarRating" value="1" class="star star-1" id="star-1" type="radio" name="star" />
+                    <label class="star star-1" for="star-1"></label>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+    <label asp-for="@Model.Review.ReviewTitle" class="form-label" for="ReviewTitle">Review title</label>
+    <input asp-for="@Model.Review.ReviewTitle" type="text" class="form-control" id="ReviewTitle" placeholder="Title of your review." name="ReviewTitle" minlength="1" maxlength="20" size="10"><br><br>
+    <label asp-for="@Model.Review.ReviewText" class="form-label" for="ReviewText">Description</label>
+    <textarea asp-for="@Model.Review.ReviewText" type="text" class="form-control" rows="5" id="ReviewText" placeholder="Describe your experience." name="ReviewText" minlength="1" maxlength="1000" size="50"></textarea>
+    <input type="hidden" asp-for="@Model.albumid" value="@Model.albumid" />
+    <button type="submit" class="btn btn-primary btn-lg mt-5">Submit Review</button>
+</form>
+
+<style>
+    div.stars {
+        width: 270px;
+        display: inline-block
+    }
+
+    input.star {
+        display: none
+    }
+
+    label.star {
+        float: right;
+        padding: 10px;
+        font-size: 36px;
+        color: #ffffff;
+        transition: all .2s
+    }
+
+    input.star:checked ~ label.star:before {
+        content: '\f005';
+        color: #ffffff;
+        transition: all .25s
+    }
+
+    input.star-5:checked ~ label.star:before {
+        color: #ffffff;
+        text-shadow: 0 0 20px #952
+    }
+
+    input.star-1:checked ~ label.star:before {
+        color: #ffffff
+    }
+
+    label.star:hover {
+        transform: scale(1.2)
+    }
+
+    label.star:before {
+        content: '\f006';
+        font-family: FontAwesome
+    }
+</style>

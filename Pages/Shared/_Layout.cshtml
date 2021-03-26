@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Howl</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css" integrity="sha384-nNK9n28pDUDDgIiIqZ/MiyO3F4/9vsMtReZK39klb/MtkZI3/LtjSjlmyVPS3KdN" crossorigin="anonymous">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-page="/P/AllReviews">Howl</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1">
+                        @*<li class="nav-item">
+            <a class="nav-link" asp-area="" asp-page="/P/WriteReview">Write</a>
+        </li>*@
+
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-page="/P/AllAlbums">All Albums</a>
+                        </li>
+                        @if (!Context.Request.Cookies.ContainsKey("UserName"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-page="/Control/Login">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-page="/Control/CreateUser">Sign up</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-page="/P/HomePage">Home</a>
+                            </li>
+
+                            <li class="nav-item ml-3 mr-3">
+                                @* <a asp-area="" asp-page="/P/Profile"><i class="nav-link bi bi-file-person">profile</i></a>*@
+                                <a asp-area="" asp-page="/P/Profile" style="color:white;">
+                                    <i class="fa fa-user align-middle mr-1" style="font-size:32px;" aria-hidden="true"></i>
+                                    @Context.Request.Cookies["UserName"]
+                                </a>
+                            </li>
+                            @if (Context.Request.Cookies["UserName"] == "Admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-page="/P/Admin">See Data</a>
+                                </li>
+                            }
+                        }
+                        <li class="nav-item d-flex ml-5">
+                            <input class="form-control" id="searchInput" type="text" value="" placeholder="Search Albums" />
+                            <button class="btn btn-primary" type="submit" onclick="createSearch()"><i class="fa fa-search"></i></button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        function createSearch() {
+            var searchTerm = $('#searchInput').val();
+            window.location.href = window.location.origin + '/P/SearchResult?SearchTerm=' + searchTerm;
+        }
+    </script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,39 @@
+﻿@page
+@model Howl.Pages.P.AllReviewsModel
+@{
+}
+<div class="d-inline">
+    <h3 class="text-info">Newest reviews</h3>
+    @if (Model.Reviews.Count != 0)
+    {
+        @foreach (var rv in Model.Reviews)
+        {
+        <div class="text-light bg-dark card mb-5">
+            <div class="card-header">
+                <h5 class="text-white card-title d-inline">@rv.Album.AlbumTitle</h5>
+                <div class="d-inline float-right">
+                    @*<p class="card-text ">@rv.StarRating</p>*@
+                    <div>
+                        @for (int i = 0; i < rv.StarRating; i++)
+                        {
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                        }
+                    </div>
+                    @*<img height="150" width="150" src="@rv.Album.CoverUrl" />*@
+                </div>
+            </div>
+            <div class="card-body">
+                <img class="float-right" height="150" width="150" src="@rv.Album.CoverUrl" />
+                <p class="text-white"><strong>@rv.ReviewTitle</strong></p>
+                <p class="card-text text-light">@rv.ReviewText</p>
+            </div>
+            <div>
+                <div class="d-inline">
+                    <p class="card-text text-white d-inline col mr-1"><em>@rv.User.Username</em></p>
+                    <p class=" card-text text-info d-inline float-right mr-2">@rv.PublishDateTime.ToString("dd/MM/yyyy")</p>
+                </div>
+            </div>
+        </div>
+        }
+    }
+</div>

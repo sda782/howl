@@ -1,0 +1,12 @@
+﻿@page
+@model Howl.Pages.Control.CreateUserModel
+@{
+}
+<h3>Create new user</h3>
+<form method="post">
+    <label asp-for="@Model.User1.Username" class="form-label" for="Username">Username</label>
+    <input asp-for="@Model.User1.Username" type="text" class="form-control" id="Username" placeholder="Username." name="Username" minlength="1" maxlength="20" size="10"><br><br>
+    <label asp-for="@Model.User1.Password" class="form-label" for="Password">Password</label>
+    <input asp-for="@Model.User1.Password" type="password" class="form-control" id="Password" placeholder="Password." name="Password" minlength="1" maxlength="20" size="10"><br><br>
+    <button type="submit" class="btn btn-primary btn-lg mt-5">Create</button>
+</form>
